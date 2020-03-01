@@ -48,12 +48,20 @@ app.get('/search', (req, res) => {
     res.render('index', { restaurants: restaurantSearch, keyword })
 })
 
+// 新增一家餐廳
+app.get('/restaurants/new', (req, res) => {
+    res.send('新增一家餐廳的頁面')
+})
 
 // 新增一家餐廳
 app.post('/restaurants', (req, res) => {
     res.send('新增一家餐廳')
 })
 
+// 修改一家餐廳的資訊頁面
+app.get('/restaurants/:id/edit', (req, res) => {
+    res.send('修改一家餐廳的資訊的頁面')
+})
 
 // 修改一家餐廳的資訊
 app.post('/restaurants/:id/edit', (req, res) => {
