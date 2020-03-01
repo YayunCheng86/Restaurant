@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
-const restaurantsList = require('./restaurant.json') 
+// const restaurantsList = require('./restaurant.json') 
 
 const port = 3000
 
@@ -26,9 +26,19 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 // route
-// 瀏覽全部餐廳 (首頁)
+
+app.get('/', (req, res) => {
+    Restaurant.find()
+    .lean()
+    .exec((err, restaurants) => {
+        if(err) return console.error(err)
+        res.render('index', { restaurants: restaurants })
+    }) 
+})
+
+// 瀏覽全部餐廳 
 app.get('/restaurants', (req, res) => {
-    res.render('index', { restaurants: restaurantsList.results })
+    return res.redirect('/')
 })
 
 // 瀏覽一家餐廳的詳細資訊                                                   ////////////////////////////////改_id
