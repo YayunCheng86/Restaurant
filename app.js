@@ -48,10 +48,13 @@ app.get('/restaurants/new', (req, res) => {
 
 // 瀏覽一家餐廳的詳細資訊                                                   ////////////////////////////////改_id
 app.get('/restaurants/:id', (req, res) => {
-    let restaurant = restaurantsList.results.find(restaurant => {
-        return restaurant.id.toString() === req.params.id
+    console.log(req.params.id)
+    Restaurant.findById(req.params.id)
+    .lean()
+    .exec((err, restaurant) => {
+        if(err) return console.error(err)
+        return  res.render('show', { restaurant })
     })
-    res.render('show', { restaurant })
 })
 
 // 瀏覽搜尋結果
@@ -66,15 +69,16 @@ app.get('/search', (req, res) => {
 
 // 新增一家餐廳
 app.post('/restaurants', (req, res) => {
-    console.log(req.body)
+    console.log(req)
     // 建立 Todo model 實例
     const restaurant = new Restaurant({
         name: req.body.name,
-        name_en: req.body.name,
-        category: req.body.name,
-        phone: req.body.name,
-        location: req.body.name,
-        description: req.body.name,
+        name_en: req.body.name_en,
+        category: req.body.category,
+        phone: req.body.phone,
+        location: req.body.location,
+        description: req.body.description,
+        image: req.body.image
     })
     // 存入資料庫
     restaurant.save(err => {
