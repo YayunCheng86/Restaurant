@@ -48,11 +48,11 @@ app.get('/restaurants/new', (req, res) => {
 
 // 瀏覽一家餐廳的詳細資訊                                                   
 app.get('/restaurants/:id', (req, res) => {
-    Restaurant.findById(req.params.id)
+        Restaurant.findById(req.params.id)
     .lean()
     .exec((err, restaurant) => {
         if(err) return console.error(err)
-        return  res.render('show', { restaurant })
+        return res.render('show', { restaurant })
     })
 })
 
@@ -118,7 +118,13 @@ app.post('/restaurants/:id/edit', (req, res) => {
 
 // 刪除一家餐廳
 app.post('/restaurants/:id/delete', (req, res) => {
-    res.send('刪除一家餐廳')
+    Restaurant.findById(req.params.id, (err, restaurant) =>{
+        if(err) return console.error(err)
+        restaurant.remove(err => {
+            if(err) return console.error(err)
+            return res.redirect('/')
+        })
+    })
 })
 
 app.listen(port, () => {
