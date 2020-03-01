@@ -1,0 +1,31 @@
+<div class="container new-input-panel">
+
+    <form method="POST" action="/restaurants/{{restaurant._id}}/edit" class="row">
+        <h4 class="d-flex justify-content-center">新增餐廳資料</h4>
+
+        <div class="d-flex mx-auto justify-content-around col-12 mt-4">
+            <input class="form-control form-control-lg col-3" type="text" placeholder="餐廳名稱" name="name" value="{{restaurant.name}}">
+            <input class="form-control form-control-lg col-3" type="text" placeholder="英文名稱" name="name_en" value="{{restaurant.name_en}}">
+            <input class="form-control form-control-lg col-2" type="text" placeholder="分類" name="category" value="{{restaurant.category}}">
+        </div>
+
+        <div class="d-flex mx-auto justify-content-around col-12 mt-4">
+            <input class="form-control col-3" type="text" placeholder="電話" name="phone" value="{{restaurant.phone}}">
+            <input class="form-control col-5" type="text" placeholder="地址" name="location" value="{{restaurant.location}}">
+        </div>
+
+        <div class="d-flex mx-auto justify-content-around col-12 mt-4">
+            <input class="form-control col-8" type="text" placeholder="圖片url" name="image" value="{{restaurant.image}}">
+        </div>
+
+        <div class="d-flex justify-content-center col-12 mt-4">
+            <textarea class="form-control col-8" id="exampleFormControlTextarea1" rows="3" placeholder="餐廳描述"
+                name="description" value="{{restaurant.description}}" style="height: 12vw;"></textarea>
+        </div>
+
+        <div class="d-flex justify-content-end col-12 mt-4 mb-4">
+            <button type="submit" class="btn btn-danger create-btn col-1 mr-5">edit</button>
+        </div>
+    </form>
+
+</div>

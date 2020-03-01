@@ -46,9 +46,8 @@ app.get('/restaurants/new', (req, res) => {
     res.render('new')
 })
 
-// 瀏覽一家餐廳的詳細資訊                                                   ////////////////////////////////改_id
+// 瀏覽一家餐廳的詳細資訊                                                   
 app.get('/restaurants/:id', (req, res) => {
-    console.log(req.params.id)
     Restaurant.findById(req.params.id)
     .lean()
     .exec((err, restaurant) => {
@@ -69,7 +68,6 @@ app.get('/search', (req, res) => {
 
 // 新增一家餐廳
 app.post('/restaurants', (req, res) => {
-    console.log(req)
     // 建立 Todo model 實例
     const restaurant = new Restaurant({
         name: req.body.name,
@@ -89,12 +87,33 @@ app.post('/restaurants', (req, res) => {
 
 // 修改一家餐廳的資訊頁面
 app.get('/restaurants/:id/edit', (req, res) => {
-    res.send('修改一家餐廳的資訊的頁面')
+    // 找到資料庫的資料
+    Restaurant.findById(req.params.id)
+    .lean()
+    .exec((err, restaurant) => {
+        if(err) return console.error(err)
+        res.render('edit', { restaurant })
+    })    
 })
 
 // 修改一家餐廳的資訊
 app.post('/restaurants/:id/edit', (req, res) => {
-    res.send('修改一家餐廳的資訊')
+    Restaurant.findById(req.params.id, (err, restaurant) => {
+        if (err) return console.error(err)
+        // 修改資料
+        restaurant.name = req.body.name
+        restaurant.name_en = req.body.name_en
+        restaurant.category = req.body.category
+        restaurant.phone = req.body.phone
+        restaurant.location = req.body.location
+        restaurant.image = req.body.image
+        restaurant.description = req.body.description
+        // 儲存資料
+        restaurant.save(err => {
+            if(err) return console.error(err)
+            return res.redirect(`/restaurants/${req.params.id}`)
+        })
+    })
 })
 
 // 刪除一家餐廳
