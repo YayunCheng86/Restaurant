@@ -2,8 +2,7 @@ const express = require('express')
 const app = express()
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
-// const restaurantsList = require('./restaurant.json') 
-
+const bodyParser = require('body-parser')
 const port = 3000
 
 // 連線資料庫
@@ -24,9 +23,10 @@ const Restaurant = require('./models/restaurant')
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // route
-
+// 首頁
 app.get('/', (req, res) => {
     Restaurant.find()
     .lean()
@@ -39,6 +39,11 @@ app.get('/', (req, res) => {
 // 瀏覽全部餐廳 
 app.get('/restaurants', (req, res) => {
     return res.redirect('/')
+})
+
+// 新增一家餐廳
+app.get('/restaurants/new', (req, res) => {
+    res.render('new')
 })
 
 // 瀏覽一家餐廳的詳細資訊                                                   ////////////////////////////////改_id
@@ -58,14 +63,24 @@ app.get('/search', (req, res) => {
     res.render('index', { restaurants: restaurantSearch, keyword })
 })
 
-// 新增一家餐廳
-app.get('/restaurants/new', (req, res) => {
-    res.send('新增一家餐廳的頁面')
-})
 
 // 新增一家餐廳
 app.post('/restaurants', (req, res) => {
-    res.send('新增一家餐廳')
+    console.log(req.body)
+    // 建立 Todo model 實例
+    const restaurant = new Restaurant({
+        name: req.body.name,
+        name_en: req.body.name,
+        category: req.body.name,
+        phone: req.body.name,
+        location: req.body.name,
+        description: req.body.name,
+    })
+    // 存入資料庫
+    restaurant.save(err => {
+        if(err) return console.error(err)
+        return res.redirect('/')
+    })    
 })
 
 // 修改一家餐廳的資訊頁面

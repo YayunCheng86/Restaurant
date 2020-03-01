@@ -35,6 +35,11 @@ header {
   color: #9b4b4b;
 }
 
+.create-btn{
+  position: sticky;
+  right: 10%;
+}
+
 .form-control::placeholder {
   color: #aaaaaa;
   font-size: 0.8rem;
@@ -99,3 +104,24 @@ header {
   }
   
 }
+
+/* new handlebars */
+.new-input-panel {
+  position: relative;
+  top: -170px;
+  background-color: #fce2cf;
+}
+
+.new-input-panel h4 {
+  background-color: #9b4b4b;
+  width: 150px;
+  margin: auto;
+  position: relative;
+  top: -15px;
+  z-index: 2;
+  padding: 4px;
+  font-family: Microsoft JhengHei;
+  color: #fce2cf;
+  font-weight: bold;  
+}
+
