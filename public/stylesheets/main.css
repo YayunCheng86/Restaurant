@@ -125,3 +125,11 @@ header {
   font-weight: bold;  
 }
 
+.no-result{
+  font-size: medium;
+  position: relative;
+  left: 305px;
+  text-align: center;
+  color: gray;
+  font-family: Microsoft JhengHei;
+}

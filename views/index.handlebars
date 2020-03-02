@@ -26,6 +26,13 @@
     <div class="row">
         <div class="col-md-10 col-12 mx-auto">
             <div class="card-columns">
+                
+                {{#if noResult}}
+                    <div class="no-result">
+                        {{noResult}}
+                    </div>    
+                {{/if}}
+
                 {{#each restaurants}}
                     <a href="/restaurants/{{ this._id }}" class="text-secondary">
                         <div class="card mb-3">

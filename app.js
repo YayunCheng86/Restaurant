@@ -59,10 +59,20 @@ app.get('/restaurants/:id', (req, res) => {
 // 瀏覽搜尋結果
 app.get('/search', (req, res) => {
     let keyword = req.query.keyword
-    let restaurantSearch = restaurantsList.results.filter(restaurant => {
-        return restaurant.name.toLowerCase().includes(keyword.toLowerCase())
+    Restaurant.find()
+    .lean()
+    .exec((err, restaurants) => {
+        let noResult
+        if(err) return console.error(err)
+        restaurants =  restaurants.filter(restaurant => {
+            return restaurant.name.toLowerCase().includes(keyword.toLowerCase())
+        })         
+        // 如果搜尋結果是空值，就回傳'no result'
+        if(restaurants.length === 0) {
+            noResult = 'No results'
+        }
+        return res.render('index', { restaurants, keyword, noResult })
     })
-    res.render('index', { restaurants: restaurantSearch, keyword })
 })
 
 
