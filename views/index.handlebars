@@ -52,7 +52,7 @@
                                 <div class='user-action'>
                                     <a href="/restaurants/{{this._id}}">detail</a>
                                     <a href="/restaurants/{{this._id}}/edit">edit</a>
-                                    <form action="/restaurants/{{{this._id}}}/delete" method="POST" style="display: inline;"
+                                    <form action="/restaurants/{{{this._id}}}/delete?_method=DELETE" method="POST" style="display: inline;"
                                     onsubmit="let r = confirm('Are you sure to delete this restaurant?');if (r === true) return true; else return false;">
                                         <button type="submit" class="btn btn-light">delete</button>
                                     </form>

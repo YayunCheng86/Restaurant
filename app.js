@@ -3,6 +3,7 @@ const app = express()
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 const port = 3000
 
 // 連線資料庫
@@ -24,6 +25,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // route
 // 首頁
@@ -107,7 +109,7 @@ app.get('/restaurants/:id/edit', (req, res) => {
 })
 
 // 修改一家餐廳的資訊
-app.post('/restaurants/:id/edit', (req, res) => {
+app.put('/restaurants/:id/edit', (req, res) => {
     Restaurant.findById(req.params.id, (err, restaurant) => {
         if (err) return console.error(err)
         // 修改資料
@@ -127,7 +129,7 @@ app.post('/restaurants/:id/edit', (req, res) => {
 })
 
 // 刪除一家餐廳
-app.post('/restaurants/:id/delete', (req, res) => {
+app.delete('/restaurants/:id/delete', (req, res) => {
     Restaurant.findById(req.params.id, (err, restaurant) =>{
         if(err) return console.error(err)
         restaurant.remove(err => {
