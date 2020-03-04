@@ -17,10 +17,10 @@
     </div>
 </div>
 
+{{!-- create btn --}}
 <form action="/restaurants/new" class="row d-flex mx-auto justify-content-end col-12">
     <button type="submit" class="btn btn-danger create-btn col-1 mr-5">Create</button>
 </form>
-
 
 <div class="container mt-5">
     <div class="row">
@@ -53,7 +53,7 @@
                                     <a href="/restaurants/{{this._id}}">detail</a>
                                     <a href="/restaurants/{{this._id}}/edit">edit</a>
                                     <form action="/restaurants/{{{this._id}}}/delete?_method=DELETE" method="POST" style="display: inline;"
-                                    onsubmit="let r = confirm('Are you sure to delete this restaurant?');if (r === true) return true; else return false;">
+                                    onsubmit="let r = confirm('Are you sure to delete this restaurant?');if (r) return true; else return false;">
                                         <button type="submit" class="btn btn-light">delete</button>
                                     </form>
                                 </div>
