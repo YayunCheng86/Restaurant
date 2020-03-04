@@ -6,7 +6,7 @@ const Restaurant = require('../models/restaurant')
 router.get('/', (req, res) => {
     let dropdown = req.query.name
 
-    if(dropdown === 'location'){   // 地點排序
+    if (dropdown === 'location'){   // 地點排序
         Restaurant.find()
         .sort({ location: 'asc' })
         .lean()
@@ -14,9 +14,7 @@ router.get('/', (req, res) => {
             if (err) return console.error(err)
             return res.render('index', { restaurants: restaurants })
         })
-    }
-
-    if (dropdown === 'name') {   // 名稱排序
+    } else if (dropdown === 'name') {   // 名稱排序
         Restaurant.find()
         .sort({ name: 'asc' })
         .lean()
@@ -24,9 +22,7 @@ router.get('/', (req, res) => {
             if (err) return console.error(err)
             return res.render('index', { restaurants: restaurants })
         })
-    }
-
-    if (dropdown === 'category') {  // 類別排序
+    } else if (dropdown === 'category') {  // 類別排序
         Restaurant.find()
         .sort({ category: 'asc' })
         .lean()
@@ -34,7 +30,17 @@ router.get('/', (req, res) => {
             if (err) return console.error(err)
             return res.render('index', { restaurants: restaurants })
         })
+    } else {
+        Restaurant.find()
+            .sort({ name: 'asc' })
+            .lean()
+            .exec((err, restaurants) => {
+                if (err) return console.error(err)
+                return res.render('index', { restaurants: restaurants })
+            })
     }
+
+    
 })
 
 module.exports = router

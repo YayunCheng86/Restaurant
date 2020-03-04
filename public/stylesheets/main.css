@@ -35,11 +35,6 @@ header {
   color: #9b4b4b;
 }
 
-.create-btn{
-  position: sticky;
-  right: 10%;
-}
-
 .form-control::placeholder {
   color: #aaaaaa;
   font-size: 0.8rem;

@@ -17,10 +17,26 @@
     </div>
 </div>
 
-{{!-- create btn --}}
-<form action="/restaurants/new" class="row d-flex mx-auto justify-content-end col-12">
-    <button type="submit" class="btn btn-danger create-btn col-1 mr-5">Create</button>
-</form>
+{{!-- create btn and sort dropdown--}}
+<div class="container">
+    <div class="row d-flex justify-content-end">
+        <form action="/restaurants/new" class="col-1">
+            <button type="submit" class="btn btn-danger create-btn">Create</button>
+        </form>
+        
+        <div class="dropdown col-1">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                sort by
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="?name=location">地點</a>
+                <a class="dropdown-item" href="?name=name">名稱</a>
+                <a class="dropdown-item" href="?name=category">類別</a>
+            </div>
+        </div>
+    </div> 
+</div>
 
 <div class="container mt-5">
     <div class="row">
