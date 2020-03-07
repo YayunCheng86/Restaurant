@@ -29,6 +29,7 @@ app.use(methodOverride('_method'))
 // route
 app.use('/', require('./routes/home'))
 app.use('/restaurants', require('./routes/restaurant'))
+app.use('/users', require('./routes/user'))
 
 
 app.listen(port, () => {
