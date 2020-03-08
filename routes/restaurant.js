@@ -16,7 +16,7 @@ router.get('/new', authenticated, (req, res) => {
 // 瀏覽搜尋結果
 router.get('/search', authenticated, (req, res) => {
     let keyword = req.query.keyword
-    Restaurant.find()
+    Restaurant.find({ userId: req.user._id })
         .lean()
         .exec((err, restaurants) => {
             let noResult
@@ -34,7 +34,7 @@ router.get('/search', authenticated, (req, res) => {
 
 // 瀏覽一家餐廳的詳細資訊                                                   
 router.get('/:id', authenticated, (req, res) => {
-    Restaurant.findById(req.params.id)
+    Restaurant.findOne({ _id: req.params.id, userId: req.user._id })
         .lean()
         .exec((err, restaurant) => {
             if (err) return console.error(err)
@@ -53,7 +53,8 @@ router.post('/', authenticated, (req, res) => {
         phone: req.body.phone,
         location: req.body.location,
         description: req.body.description,
-        image: req.body.image
+        image: req.body.image,
+        userId: req.user._id
     })
     // 存入資料庫
     restaurant.save(err => {
@@ -65,7 +66,7 @@ router.post('/', authenticated, (req, res) => {
 // 修改一家餐廳的資訊頁面
 router.get('/:id/edit', authenticated, (req, res) => {
     // 找到資料庫的資料
-    Restaurant.findById(req.params.id)
+    Restaurant.findOne({ _id: req.params.id, userId: req.user._id })
         .lean()
         .exec((err, restaurant) => {
             if (err) return console.error(err)
@@ -75,7 +76,7 @@ router.get('/:id/edit', authenticated, (req, res) => {
 
 // 修改一家餐廳的資訊
 router.put('/:id/edit', authenticated, (req, res) => {
-    Restaurant.findById(req.params.id, (err, restaurant) => {
+    Restaurant.findOne({ _id: req.params.id, userId: req.user._id }, (err, restaurant) => {
         if (err) return console.error(err)
         // 修改資料
         restaurant.name = req.body.name
@@ -95,7 +96,7 @@ router.put('/:id/edit', authenticated, (req, res) => {
 
 // 刪除一家餐廳
 router.delete('/:id/delete', authenticated, (req, res) => {
-    Restaurant.findById(req.params.id, (err, restaurant) => {
+    Restaurant.findOne({ _id: req.params.id, userId: req.user._id }, (err, restaurant) => {
         if (err) return console.error(err)
         restaurant.remove(err => {
             if (err) return console.error(err)
