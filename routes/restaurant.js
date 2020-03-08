@@ -1,19 +1,20 @@
 const express = require('express')
 const router = express.Router()
 const Restaurant = require('../models/restaurant')
+const { authenticated } = require('../config/auth')
 
 // 瀏覽全部餐廳 
-router.get('/', (req, res) => {
+router.get('/', authenticated, (req, res) => {
     return res.redirect('/')
 })
 
 // 新增一家餐廳
-router.get('/new', (req, res) => {
+router.get('/new', authenticated, (req, res) => {
     res.render('new')
 })
 
 // 瀏覽搜尋結果
-router.get('/search', (req, res) => {
+router.get('/search', authenticated, (req, res) => {
     let keyword = req.query.keyword
     Restaurant.find()
         .lean()
@@ -32,7 +33,7 @@ router.get('/search', (req, res) => {
 })
 
 // 瀏覽一家餐廳的詳細資訊                                                   
-router.get('/:id', (req, res) => {
+router.get('/:id', authenticated, (req, res) => {
     Restaurant.findById(req.params.id)
         .lean()
         .exec((err, restaurant) => {
@@ -43,7 +44,7 @@ router.get('/:id', (req, res) => {
 
 
 // 新增一家餐廳
-router.post('/', (req, res) => {
+router.post('/', authenticated, (req, res) => {
     // 建立 Todo model 實例
     const restaurant = new Restaurant({
         name: req.body.name,
@@ -62,7 +63,7 @@ router.post('/', (req, res) => {
 })
 
 // 修改一家餐廳的資訊頁面
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', authenticated, (req, res) => {
     // 找到資料庫的資料
     Restaurant.findById(req.params.id)
         .lean()
@@ -73,7 +74,7 @@ router.get('/:id/edit', (req, res) => {
 })
 
 // 修改一家餐廳的資訊
-router.put('/:id/edit', (req, res) => {
+router.put('/:id/edit', authenticated, (req, res) => {
     Restaurant.findById(req.params.id, (err, restaurant) => {
         if (err) return console.error(err)
         // 修改資料
@@ -87,13 +88,13 @@ router.put('/:id/edit', (req, res) => {
         // 儲存資料
         restaurant.save(err => {
             if (err) return console.error(err)
-            return res.redirect(`restaurants/${req.params.id}`)
+            return res.redirect(`/restaurants/${req.params.id}`)
         })
     })
 })
 
 // 刪除一家餐廳
-router.delete('/:id/delete', (req, res) => {
+router.delete('/:id/delete', authenticated, (req, res) => {
     Restaurant.findById(req.params.id, (err, restaurant) => {
         if (err) return console.error(err)
         restaurant.remove(err => {
