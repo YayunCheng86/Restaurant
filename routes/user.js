@@ -13,7 +13,8 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/',
-        failureRedirect: '/users/login'
+        failureRedirect: '/users/login',
+        failureFlash: req.flash('warning_msg', 'Invalid username or password.')
    })(req, res, next)
 })
 
@@ -25,10 +26,23 @@ router.get('/register', (req, res) => {
 // post register request 
 router.post('/register', (req, res) => {
     const { name, email, password, password2 } = req.body
-    User.findOne({ email: email }).then(user => {
-        if (user) {
-            res.render('register', { name, email, password, password2 })
+    let errors = []
 
+    if (!email || !password || !password2) {
+        errors.push('email與密碼欄位是必填')
+    }
+
+    if(password !== password2) {
+        errors.push('密碼輸入不相符')
+    }
+
+    if(errors.length > 0) {
+        res.render('register', { errors, name, email, password, password2 })
+    } else {
+        User.findOne({ email: email }).then(user => {
+        if (user) {
+            errors.push('此email已註冊過')
+            res.render('register', { errors, name, email, password, password2 })
         } else {
             const newUser = new User({
                 name,
@@ -51,11 +65,13 @@ router.post('/register', (req, res) => {
             })  
         }
     })
+    }
 })
 
 // logout
 router.get('/logout', (req, res) => {
     req.logout()
+    req.flash('success_msg', '你已成功登出')
     res.redirect('/users/login')
 })
 
