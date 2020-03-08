@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const session = require('express-session')
+const passport = require('passport')
 const port = 3000
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
@@ -31,6 +32,18 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }))
+
+// 使用passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+// 載入 Passport config
+require('./config/passport')(passport)
+
+app.use((req, res, next) => {
+    res.locals.user = req.user
+    next()
+})
 
 // routes
 app.use('/', require('./routes/home'))
