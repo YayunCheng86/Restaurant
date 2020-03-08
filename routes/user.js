@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const User = require('./models/user')
+const User = require('../models/user')
 
 // read login page
 router.get('/login', (req, res) => {
@@ -9,7 +9,7 @@ router.get('/login', (req, res) => {
 
 // post login request
 router.post('/login', (req, res) => {
-    res.send('login')
+   res.send('login')
 })
 
 //  read register page 
@@ -19,7 +19,25 @@ router.get('/register', (req, res) => {
 
 // post register request 
 router.post('/register', (req, res) => {
-    res.send('register')
+    const { name, email, password, password2 } = req.body
+    User.findOne({ email: email }).then(user => {
+        if (user) {
+            res.render('register', { name, email, password, password2 })
+
+        } else {
+            const newUser = new User({
+                name,
+                email,
+                password
+            })
+            newUser
+                .save()
+                .then(user => {
+                    res.redirect('/')
+                })
+                .catch(err => console.log(err))
+        }
+    })
 })
 
 // logout
